@@ -3,7 +3,7 @@ import uuid
 import re
 import re  # for case insensitive matching in mongodb
 from flask import Flask, Blueprint,render_template, request, flash, jsonify, url_for, redirect
-from FreeNetflix.creds import db
+from NetflixForCoder.creds import db
 admin = Blueprint("admin",__name__)
 
 @admin.route("/", methods=['GET'])

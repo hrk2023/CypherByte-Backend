@@ -1,7 +1,7 @@
 import uuid
 import jwt
 import datetime
-from FreeNetflix.creds import db
+from NetflixForCoder.creds import db
 from flask import Flask, Blueprint, render_template, request, jsonify
 from passlib.hash import pbkdf2_sha256
 bp = Blueprint("netflix", __name__)

@@ -1,6 +1,6 @@
 import re
 from flask import Blueprint,jsonify, render_template
-from FreeNetflix.creds import db
+from NetflixForCoder.creds import db
 from .dataArranger import Formatter
 bp = Blueprint("bp",__name__)
 
