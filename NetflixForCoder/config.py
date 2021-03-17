@@ -8,7 +8,7 @@ class Config:
     SECRET_KEY = environ.get("SECRET_KEY")
     TESTING = False
     
-class Devlopment(Config):
+class Development(Config):
     DEBUG = True
     MONGO_URI = environ.get("MONGO_URI")
     ENV = "development"

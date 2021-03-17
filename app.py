@@ -1,4 +1,6 @@
-from NetflixForCoder import app
+from NetflixForCoder import create_app
+
+app = create_app()
 
 if __name__ == "__main__":
     app.run(debug=True)
