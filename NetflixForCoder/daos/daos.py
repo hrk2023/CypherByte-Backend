@@ -5,9 +5,9 @@ class Datadaos:
     def __init__(self,cluster):
         self.cluster = cluster
 
-    def check_topic(topic,col=None):
+    def check_topic(self,topic,col=None):
         cluster = self.cluster.db
-        if(col is not None):
+        if col is None:
             collections = cluster.collection_names()
             for i in collections:
                 collection = cluster[i]
@@ -23,7 +23,7 @@ class Datadaos:
                 {'$regex' : '^{}'.format(topic),'$options' : 'i'}
                 })
             if response:
-                return True
+                return collection
             return False
 
     def get_by_topic(self, topic):
@@ -53,19 +53,41 @@ class Datadaos:
         return False
 
     def post_new_topic(self,data,col):
-        cluster = self.cluster.db
-        col = cluster[col]
-        # col = check_topic(topic,col)
-        # if col:
-        #     return col.update_one({"topic" : topic},{"$set" : data})
-        # else:
-        return col.insert_one(data)
-            
+        topic = data["topic"]
+        collection = self.check_topic(topic,col)
+        if collection:
+            return collection.update_one({"topic" : topic},{"$set" : data})
+        else:
+            cluster = self.cluster.db
+            col = cluster[col]
+            return col.insert_one(data)
+
+
     def post_new_video(self,data,topic):
-        col = check_topic(topic)
+        col = self.check_topic(topic)
         if col:
-            return col.update_one({"topic" : topic},{"$set" : {"videos" : data}})
+            return col.update_one({"topic" : topic},{"$push" : {"videos" : data}})
+        else: 
+            return False
+    
+    def post_new_doc(self,data,topic):
+        col = self.check_topic(topic)
+        if col:
+            return col.update_one({"topic" : topic},{"$push" : {"docs" : data}})
+        else: 
+            return False
+
+    def post_new_original_src(self,data,topic):
+        col = self.check_topic(topic)
+        if col:
+            return col.update_one({"topic" : topic},{"$push" : {"original_src" : data}})
         else: 
             return False
                 
-   
+    def delete_topic(self,topic):
+        col = self.check_topic(topic)
+        if col:
+           return col.delete_one({"topic" : topic})
+        else:
+            return False
+    
