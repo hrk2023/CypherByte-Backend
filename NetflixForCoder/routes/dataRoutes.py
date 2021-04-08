@@ -43,6 +43,7 @@ def create_blueprint(cluster):
     def add_bulk_playlist():
         if request.method == 'POST':
             bulk_data = request.json["bulk_data"]
+            collection = request.json["collection"]
             for data in bulk_data:
                 playlist_data = {
                     "topic" : data["topic"],
@@ -52,9 +53,9 @@ def create_blueprint(cluster):
                     "videos" : data["videos"],
                     "datetime" : datetime.datetime.now(),
                     "tags" : data["tags"],
-                    "unique_id" : str(uuid.uuid4())
+                    "unique_id" : str(uuid.uuid4()),
+                    "poster_path" : data["poster_path"]
                 }
-                collection = data["collection"]
                 response = daos.post_new_topic(playlist_data,collection)
                 if response:
                     continue
@@ -63,6 +64,13 @@ def create_blueprint(cluster):
             return jsonify({"status" : 200, "message" : "data insertion successful"})
         return '<h1>WORKING</h1>'
 
+    #GET ALL DATA OF A SECTION
+    @cypherbyte.route('/search/all/<section>',methods=['GET'])
+    def get_by_section(section):
+        response = daos.get_by_col(section)
+        if response:
+            return jsonify({"status" : 200, "result" : response})
+        return jsonify({"status" : 404, "message" : "data not found"})
 
     #GET DATA ON THE BASIS OF TOPIC
     @cypherbyte.route('/search/topic/<topic>',methods=['GET'])

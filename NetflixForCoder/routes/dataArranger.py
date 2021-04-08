@@ -11,7 +11,8 @@ class Formatter():
                 "videos" : data["videos"],
                 "datetime" : data["datetime"],
                 "tags" : data["tags"],
-                "unique_id" : data["unique_id"]
+                "unique_id" : data["unique_id"],
+                "poster_path": data["poster_path"]
             }
             output.append(playlist_data)
         return output

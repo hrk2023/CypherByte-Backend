@@ -26,6 +26,17 @@ class Datadaos:
                 return collection
             return False
 
+    def get_by_col(self, col):
+        cluster = self.cluster.db
+        collections = cluster.collection_names()
+        if col in collections:
+            collection = cluster[col]
+            response = collection.find()
+            if response:
+                result = Formatter.PlaylistFormatter(response)
+                return result
+        return False
+
     def get_by_topic(self, topic):
         cluster = self.cluster.db
         collections = cluster.collection_names()
